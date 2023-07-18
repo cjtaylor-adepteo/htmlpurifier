@@ -101,7 +101,8 @@ class HTMLPurifier_Lexer
                         break;
                     }
 
-                    if (class_exists('DOMDocument') &&
+                    if (
+                        class_exists('DOMDocument') &&
                         method_exists('DOMDocument', 'loadHTML') &&
                         !extension_loaded('domxml')
                     ) {
@@ -130,7 +131,7 @@ class HTMLPurifier_Lexer
                 default:
                     throw new HTMLPurifier_Exception(
                         "Cannot instantiate unrecognized Lexer type " .
-                        htmlspecialchars($lexer)
+                            htmlspecialchars($lexer)
                     );
             }
         }
@@ -144,12 +145,11 @@ class HTMLPurifier_Lexer
         if ($needs_tracking && !$inst->tracksLineNumbers) {
             throw new HTMLPurifier_Exception(
                 'Cannot use lexer that does not support line numbers with ' .
-                'Core.MaintainLineNumbers or Core.CollectErrors (use DirectLex instead)'
+                    'Core.MaintainLineNumbers or Core.CollectErrors (use DirectLex instead)'
             );
         }
 
         return $inst;
-
     }
 
     // -- CONVENIENCE MEMBERS ---------------------------------------------
@@ -164,21 +164,23 @@ class HTMLPurifier_Lexer
      * @type array
      */
     protected $_special_entity2str =
-        array(
-            '&quot;' => '"',
-            '&amp;' => '&',
-            '&lt;' => '<',
-            '&gt;' => '>',
-            '&#39;' => "'",
-            '&#039;' => "'",
-            '&#x27;' => "'"
-        );
+    array(
+        '&quot;' => '"',
+        '&amp;' => '&',
+        '&lt;' => '<',
+        '&gt;' => '>',
+        '&#39;' => "'",
+        '&#039;' => "'",
+        '&#x27;' => "'"
+    );
 
-    public function parseText($string, $config) {
+    public function parseText($string, $config)
+    {
         return $this->parseData($string, false, $config);
     }
 
-    public function parseAttr($string, $config) {
+    public function parseAttr($string, $config)
+    {
         return $this->parseData($string, true, $config);
     }
 
@@ -323,7 +325,7 @@ class HTMLPurifier_Lexer
         // escape CDATA
         $html = $this->escapeCDATA($html);
 
-        if (!$config->get('HTML.retainIEConditional')) {
+        if (!$config->get('HTML.RetainIEConditional')) {
             $html = $this->removeIEConditional($html);
         }
 
@@ -331,7 +333,7 @@ class HTMLPurifier_Lexer
         if ($config->get('Core.ConvertDocumentToFragment')) {
             $e = false;
             if ($config->get('Core.CollectErrors')) {
-                $e =& $context->get('ErrorCollector');
+                $e = &$context->get('ErrorCollector');
             }
             $new_html = $this->extractBody($html);
             if ($e && $new_html != $html) {
@@ -356,9 +358,11 @@ class HTMLPurifier_Lexer
         }
 
         $hidden_elements = $config->get('Core.HiddenElements');
-        if ($config->get('Core.AggressivelyRemoveScript') &&
+        if (
+            $config->get('Core.AggressivelyRemoveScript') &&
             !($config->get('HTML.Trusted') || !$config->get('Core.RemoveScriptContents')
-            || empty($hidden_elements["script"]))) {
+                || empty($hidden_elements["script"]))
+        ) {
             $html = preg_replace('#<script[^>]*>.*?</script>#i', '', $html);
         }
 
@@ -377,8 +381,10 @@ class HTMLPurifier_Lexer
             // Make sure it's not in a comment
             $comment_start = strrpos($matches[1], '<!--');
             $comment_end   = strrpos($matches[1], '-->');
-            if ($comment_start === false ||
-                ($comment_end !== false && $comment_end > $comment_start)) {
+            if (
+                $comment_start === false ||
+                ($comment_end !== false && $comment_end > $comment_start)
+            ) {
                 return $matches[2];
             }
         }

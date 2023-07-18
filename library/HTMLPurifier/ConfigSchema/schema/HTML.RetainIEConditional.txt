@@ -1,0 +1,7 @@
+HTML.RetainIEConditional
+TYPE: bool
+VERSION: 2.0.0
+DEFAULT: false
+--DESCRIPTION--
+Indicates whether or not the user input will have the CSO markup removed for IE6
+--# vim: et sw=4 sts=4
