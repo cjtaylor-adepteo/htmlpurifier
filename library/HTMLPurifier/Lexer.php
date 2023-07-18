@@ -323,7 +323,9 @@ class HTMLPurifier_Lexer
         // escape CDATA
         $html = $this->escapeCDATA($html);
 
-        $html = $this->removeIEConditional($html);
+        if (!$config->get('HTML.retainIEConditional')) {
+            $html = $this->removeIEConditional($html);
+        }
 
         // extract body from document if applicable
         if ($config->get('Core.ConvertDocumentToFragment')) {
