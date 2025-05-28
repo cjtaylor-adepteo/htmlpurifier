@@ -59,7 +59,7 @@ extends HTMLPurifier_ChildDefHarness
         );
     }
 
-    public function testWrapComplicatedSring()
+    public function testWrapComplicatedString()
     {
         $this->assertResult(
             $var = 'He said<br />perhaps<br />we should <b>nuke</b> them.',
@@ -84,7 +84,7 @@ extends HTMLPurifier_ChildDefHarness
 
     public function testError()
     {
-        $this->expectError('Cannot use non-block element as block wrapper');
+        $this->expectException(new Exception('Cannot use non-block element as block wrapper'));
         $this->obj = new HTMLPurifier_ChildDef_StrictBlockquote('div | p');
         $this->config->set('HTML.BlockWrapper', 'dav');
         $this->config->set('Cache.DefinitionImpl', null);

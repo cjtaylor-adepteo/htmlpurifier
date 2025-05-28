@@ -23,9 +23,8 @@
  *          $test_files) do not have underscores in their names.
  */
 
-// HTML Purifier runs error free on E_STRICT, so if code reports
-// errors, we want to know about it.
-error_reporting(E_ALL | E_STRICT);
+// HTML Purifier runs error free.
+error_reporting(E_ALL);
 
 // Because we always want to know about errors, and because SimpleTest
 // will notify us about them, logging the errors to stderr is
@@ -101,7 +100,7 @@ if (!SimpleReporter::inCli()) {
 }
 
 // initialize and load HTML Purifier
-// use ?standalone to load the alterative standalone stub
+// use ?standalone to load the alternative standalone stub
 if ($AC['standalone']) {
     require '../library/HTMLPurifier.standalone.php';
 } else {

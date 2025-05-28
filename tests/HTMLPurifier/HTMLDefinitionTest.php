@@ -222,6 +222,17 @@ a[href|title]
         $this->assertPurification_AllowedAttributes_local_p_style();
     }
 
+    public function test_AllowedAttributes_invalidAttributeDueToConsistingOfNumbers_UsingDirectLex()
+    {
+        $this->config->set('HTML.AllowedElements', array('a'));
+        $this->config->set('HTML.AllowedAttributes', 'href');
+        $this->config->set('Core.LexerImpl', 'DirectLex');
+        $this->assertPurification(
+            '<a href="https://example.com/" 10="hoge">Test</a>',
+            '<a href="https://example.com/">Test</a>'
+        );
+    }
+
     public function test_ForbiddenElements()
     {
         $this->config->set('HTML.ForbiddenElements', 'b');
@@ -397,6 +408,19 @@ a[href|title]
         $output = $purifier->purify($input);
 
         $this->assertIdentical($input, $output);
+    }
+
+    public function test_removeBlanks()
+    {
+        $config = HTMLPurifier_Config::createDefault();
+        $config->set('Core.RemoveBlanks', true);
+
+        $input = file_get_contents(__DIR__ . '/FixtureData/RemoveBlankTestCaseInput.html');
+        $expected = file_get_contents(__DIR__ . '/FixtureData/RemoveBlankTestCaseOutput.html');
+
+        $purifier = new HTMLPurifier($config);
+        $actual = $purifier->purify($input);
+        $this->assertIdentical($expected, $actual);
     }
 
 }

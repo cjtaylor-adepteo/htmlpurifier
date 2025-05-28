@@ -13,6 +13,8 @@ class HTMLPurifier_AttrDef_CSSTest extends HTMLPurifier_AttrDefHarness
     {
         // regular cases, singular
         $this->assertDef('text-align:right;');
+        $this->assertDef('direction:ltr;');
+        $this->assertDef('direction:rtl;');
         $this->assertDef('border-left-style:solid;');
         $this->assertDef('border-style:solid dotted;');
         $this->assertDef('clear:right;');
@@ -72,6 +74,10 @@ class HTMLPurifier_AttrDef_CSSTest extends HTMLPurifier_AttrDefHarness
         $this->assertDef('min-width:50rem;');
         $this->assertDef('min-width:50vw;');
         $this->assertDef('min-width:-50vw;', false);
+        $this->assertDef('aspect-ratio:16/9;');
+        $this->assertDef('aspect-ratio:auto;');
+        $this->assertDef('aspect-ratio:16/9 auto;');
+        $this->assertDef('aspect-ratio:auto 16/9;');
         $this->assertDef('text-decoration:underline;');
         $this->assertDef('text-decoration-line:overline;');
         $this->assertDef('text-decoration-style:dashed;');
@@ -116,8 +122,10 @@ class HTMLPurifier_AttrDef_CSSTest extends HTMLPurifier_AttrDefHarness
         $this->assertDef('text-transform:capitalize;destroy:it;',
                          'text-transform:capitalize;');
 
-        // inherit works for everything
+        // universal values work for everything
         $this->assertDef('text-align:inherit;');
+        $this->assertDef('text-align:initial;');
+        $this->assertDef('text-align:unset;');
 
         // bad props
         $this->assertDef('nodice:foobar;', false);
